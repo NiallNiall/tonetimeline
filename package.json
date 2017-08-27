@@ -1,0 +1,27 @@
+{
+  "name": "Jsexperiments",
+  "version": "0.0.2",
+  "author": "Niall",
+  "description": "gulp, localhost, livereload, sass, jshint",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "scripts": {
+    "install": "gulp sass"
+  },
+  "dependencies": {
+    "connect": "^3.6.1",
+    "connect-livereload": "^0.5.4",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-include": "^2.3.1",
+    "gulp-jshint": "^2.0.4",
+    "gulp-livereload": "^3.8.1",
+    "gulp-sass": "^2.3.2",
+    "jshint": "^2.9.4",
+    "merge-stream": "^1.0.1",
+    "serve-static": "^1.12.2"
+  }
+}

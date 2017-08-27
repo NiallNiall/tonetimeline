@@ -1,0 +1,64 @@
+//===============================================================================
+// IMPORTS
+//===============================================================================
+// normalize.css v3.0.0 | MIT License | git.io/normalize
+@import "_normalize.scss";
+
+// define mixins & functions
+@import "_mixins.scss";
+
+//===============================================================================
+// VARIABLES
+//===============================================================================
+$paper:  white;
+$ink:    black;
+
+$bgColour: #FCF7E9;
+
+//===============================================================================
+// BASCIS
+//===============================================================================
+*,
+*::before,
+*:after {
+  box-sizing: border-box;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+html,
+body {
+  background-color: $paper;
+  color: $ink;
+  font-family: sans-serif;
+  line-height: 1.4;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+//===============================================================================
+// STYLES
+//===============================================================================
+
+.fullWidthCanvas {
+  background: $bgColour;
+  width: 100%;
+  height: 100%;
+  &.first {
+    background: darken($bgColour, 20%);
+  }
+  &.second {
+    background: darkeen($bgColour, 30%);
+  }
+  &.third {
+    background: darken($bgColour, 10%);
+  }
+  &.fourth {
+    background: darken($bgColour, 15%);
+  }
+}
