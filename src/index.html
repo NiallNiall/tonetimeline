@@ -1,43 +1,172 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Tone Timeline</title> 
+    <meta charset="utf-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tone Timeline</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+    html,
+    body {
+        background-color: white;
+        color: black;
+        font-family: sans-serif;
+        line-height: 1.4;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
 
-  <link rel="stylesheet" href="css/styles.css">
+    .fullWidthCanvas {
+        background: #FCF7E9;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
 
-  <style>
-	.fullwidth {
-		position: absolute;
-		top:0;
-		left:0;
-		width: 100%;
-		height: 100%;
-		background: #240;
-	}
-	.fullwidth.white{
-		background: #fff;
-	}
-	.midbtn {
-		background: #f00;
-		padding: 24px;
-		position: absolute;
-		margin-left:50%;
-		z-index: 10;
-	}
-  </style>
+    .fullwidth {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /*		background: #240;*/
+    }
 
+    .fullwidth.white {
+        background: #fff;
+    }
+
+    .midbtn {
+        background: #f00;
+        padding: 24px;
+        position: absolute;
+        margin-left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        z-index: 10;
+    }
+    </style>
 </head>
+
 <body>
+    <a class="midbtn" id="playbtn">PLAY</a>
+    <div id="mainbox" class="fullwidth"></div>
+    <canvas id="paperCanvas" class="fullWidthCanvas" resize></canvas>
+    <script src="js/vendor/Tone.js"></script>
+    <script src="js/base.js"></script>
+    <script>
+    var myCanvas = document.getElementById("paperCanvas");
 
-	<a class="midbtn" id="playbtn">PLAY</a>
+    myCanvas.width = window.innerWidth;
+    myCanvas.height = window.innerHeight;
+    var ctx = myCanvas.getContext("2d");
 
-	<div id="mainbox" class="fullwidth"></div>
+    var centerX = myCanvas.width / 2;
+    var centerY = myCanvas.height / 2;
 
-  <script src="js/vendor/Tone.js"></script>
-  <script src="js/base.js"></script>
 
+    function clearCanvas() {
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    }
+
+    function fadeCanvas() {
+
+    	ctx.beginPath()
+     	ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
+        ctx.closePath();
+
+    	// ctx.fillStyle = 'Blue';
+     //    ctx.rect(0, 0, myCanvas.width, myCanvas.height);
+    }
+
+    // console.log(ctx);
+
+    function drawCircle(x, y, radius, clr) {
+        ctx.beginPath()
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = clr;
+        ctx.stroke();
+        ctx.closePath();
+    }
+
+    function drawFillCircle(x, y, radius, clr) {
+        ctx.beginPath()
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        // ctx.lineWidth = 5;
+        ctx.fillStyle = clr;
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    function drawPixel(x, y){
+        ctx.beginPath();
+        ctx.rect(x,y,5,5);
+        ctx.fillStyle = 'White';
+        ctx.fill();
+        ctx.closePath();  
+    }
+
+	var midsize = 10;
+
+    function renderLoop() {
+
+    	fadeCanvas();
+
+        drawCircle(centerX, centerY, 200, 'Black');
+        drawFillCircle(centerX, centerY, midsize, 'Red');
+        drawFillCircle(centerX, centerY, 75, 'White');
+
+        if(midsize>0){midsize -= 1}else{midsize=0;}
+    }
+
+    renderLoop();
+
+    var frameIndex = 0;
+    var spriteWidth = 80;
+    var spriteMax = 400;
+    var numFrames = spriteMax / spriteWidth;
+
+
+
+    var img = new Image();
+    img.onload = function() {
+        ctx.drawImage(img, frameIndex, 0, 80, 80, 0, 0, 80, 80);
+    };
+    img.src = 'img/frame-sprite-animation.png';
+
+
+    var frameCount = 0;
+    var frameRateish = 25;
+
+    function frameLoop() {
+
+        window.requestAnimationFrame(frameLoop);
+        renderLoop();
+        if (frameCount < frameRateish) { frameCount += 1 } else {
+            if (frameIndex < numFrames-1) { frameIndex += 1; } else { frameIndex = 0; }
+            ctx.drawImage(img, frameIndex * spriteWidth, 0, 80, 80, 0, 0, 80, 80);
+            frameCount = 0;
+        }
+    }
+
+    frameLoop();
+
+    // window.onload = function() {
+
+    //     var coinImage = new Image();
+    // 	coinImage.src = "img/frame-sprite-animation.png";
+    //     // var img=document.getElementById("img/frame-sprite-animation.png");
+    //     ctx.drawImage(coinImage,10,10,150,180);
+    // };
+
+    // coin.render();
+    </script>
 </body>
+
 </html>

@@ -4,6 +4,7 @@ var player = new Tone.Player({
 		}).toMaster();
 
 
+// DOM VARS========================================
 var mainbox = document.getElementById('mainbox');
 
 Tone.Transport.bpm.value = 123;
@@ -15,7 +16,7 @@ var part = new Tone.Part(function(time, event){
 	//the events will be given to the callback with the time they occur
 	// synth.triggerAttackRelease(event.note, event.dur, time)
 	// console.log('yo');
-	mainbox.classList.toggle(event.clr);
+	// mainbox.classList.toggle(event.clr);
 }, [{ time : 0, note : 'D2', dur : '8n', clr : 'white'}
 	])
 
@@ -24,7 +25,7 @@ var part2 = new Tone.Part(function(time, event){
 	//the events will be given to the callback with the time they occur
 	synth.triggerAttackRelease(event.note, event.dur, time)
 	// console.log('yo');
-	mainbox.classList.toggle(event.clr);
+	// mainbox.classList.toggle(event.clr);
 }, [{ time : 0, note : 'D2', dur : '8n', clr : 'white'}
 	])
 
@@ -37,6 +38,16 @@ part2.start("2m")
 part2.loop = 4
 
 
+var beat = new Tone.Part(function(time, event){
+	midsize = 200;
+	// synth.triggerAttackRelease(event.note, event.dur, time)
+}, [{ time : 0, note : 'D4', dur : '8n'}
+	])
+
+beat.start(0)
+beat.loop = 8;
+beat.loopEnd = '1m';
+
 
 // player.sync().start(0).stop(0.3);
 
@@ -48,7 +59,7 @@ var playing = false;
 function playPause(playing) {
 	if(playing){
 	player.sync().start(0.1);
-	Tone.Transport.start("+0.5", 0.5);
+	Tone.Transport.start(0, 0);
 	} else {
 		Tone.Transport.stop();
 	}
