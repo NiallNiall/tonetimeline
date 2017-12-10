@@ -1,8 +1,19 @@
+// Alt way of loading
+// ========================
+// var player = new Tone.Player();
+// player.load("./sounds/quickloop.wav", loaded());
+// player.toMaster();
+
 var player = new Tone.Player({
 			"url" : "./sounds/quickloop.wav",
 			"loop" : false
 		}).toMaster();
 
+Tone.Buffer.on('load', function(){
+	//all buffers are loaded.
+	songLoaded = true;	
+	console.log("All Loaded!");
+})
 
 // DOM VARS========================================
 var mainbox = document.getElementById('mainbox');
