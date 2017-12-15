@@ -1,7 +1,5 @@
 //=include partials/_noisehelper.js
 
-//=include partials/_circleClass.js
-
 // Initialise Canvas Objects ============================================
 
 var myCanvas = document.getElementById("paperCanvas");
@@ -23,6 +21,8 @@ var centerY = myCanvas.height / 2;
 var playButton = document.getElementById('playbtn');
 var playing = false;
 
+var ripples = [];
+
 // Load Song============================================
 var player = new Tone.Player({
     "url": "./sounds/chordsv8.wav",
@@ -38,6 +38,8 @@ Tone.Buffer.on('load', function() {
     playButton.innerHTML = "PLAY";
     playButton.classList.add("play");
 })
+
+Tone.Transport.bpm.value = 123;
 
 
 // General Functions
@@ -72,8 +74,8 @@ playButton.addEventListener("click", function() {
 //pass in an array of events
 var part = new Tone.Part(function(time, event) {
     // drawRandomCircle();
-    var newRipple = createRipple();
-    // newRipple.drawRipple(200,200,10,'white');
+    drawRandomRipple();
+    // var newRipple = createRipple();
 }, [{ time: 0, note: 'C4', dur: '8n' }])
 
 //start the part at the beginning of the Transport's timeline
@@ -160,3 +162,35 @@ function drawCircle(x, y, radius, clr) {
     ctx.stroke();
     ctx.closePath();
 }
+
+function drawRandomRipple(){
+    var tempPosX = randomIntFromInterval(0,canvasWidth);
+    var tempPosY = randomIntFromInterval(0,canvasHeight);
+
+    var newRipple = createRipple(tempPosX, tempPosY);
+    ripples.push(newRipple);
+}
+
+function fadeCanvas() {
+
+    ctx.beginPath()
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
+    ctx.closePath();
+
+}
+
+// Frame Drawing ============================================
+function renderLoop() {
+    for (var i = 0; i < ripples.length; i++) {
+        ripples[i].loop();
+    }
+    fadeCanvas();
+}
+
+function frameLoop() {
+    window.requestAnimationFrame(frameLoop);
+    renderLoop();
+}
+
+frameLoop();
