@@ -16,7 +16,7 @@ var src = {
      html: [ 'src/**/*.html'],
      sass: 'src/sass/**/*.scss',
    vndrjs: 'src/vendor/**/*.js', 
-       js: 'src/js/*.js',
+       js: 'src/js/**/*.js',
       img: 'src/img/**/*'
 };
 

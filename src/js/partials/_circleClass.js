@@ -1,8 +1,13 @@
 function createRipple(thisx,thisy) {
 
-    var objRadius = 10;
+    var alive = true;
+
+    var objRadius = 1;
+    var objMaxRadius = 200;
     var objx = thisx;
     var objy = thisy;
+
+    var clrInc = 0;
 
     var ripple = {
         drawRipple: drawRipple,
@@ -19,12 +24,20 @@ function createRipple(thisx,thisy) {
     }
 
     function loop(){
-        objRadius+=1;
-        // drawRipple(objx,objy,objRadius+5,'rgba(0, 0, 0, 0.05)');
-        drawRipple(objx,objy,objRadius,'white');
+        clrInc += 10;
+
+        if(objRadius<objMaxRadius){
+            objRadius+=1;
+            // drawRipple(objx,objy,objRadius,nhpink);
+                // drawNoiseCircle(tempPosX,tempPosY,25, rndRadius, sclrVar )
+
+            drawNoiseCircle(objx,objy,objRadius, objRadius,objRadius/2, clrInc);
+        } else {
+            alive = false;
+        }
     }
 
-    drawRipple(objx,objy,objRadius,'white');
+    // drawRipple(objx,objy,objRadius,nhpink);
 
 
     return ripple;

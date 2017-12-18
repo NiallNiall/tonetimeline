@@ -1,4 +1,5 @@
 //=include partials/_noisehelper.js
+//=include partials/_colors.js
 
 // Initialise Canvas Objects ============================================
 
@@ -42,11 +43,12 @@ Tone.Buffer.on('load', function() {
 Tone.Transport.bpm.value = 123;
 
 
-// General Functions
+// General Functions ============================================
 function randomIntFromInterval(min,max)
 {
     return Math.floor(Math.random()*(max-min+1)+min);
 }
+
 
 
 // Initialise Objects ============================================
@@ -118,12 +120,34 @@ function drawPixel(x, y){
         ctx.fill();     
     }
 
+function drawFadePixel(x, y){
+        ctx.beginPath();
+        ctx.rect(x-10,y-10,20,20);
+        ctx.fillStyle = 'rgba(255,255,255,0.01)';
+        ctx.closePath();
+        ctx.fill();
+        ctx.beginPath();
+        ctx.rect(x-5,y-5,10,10);
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.closePath();
+        ctx.fill();
+        ctx.beginPath();
+        ctx.rect(x,y,1,1);
+        ctx.fillStyle = 'White';
+        ctx.closePath();
+        ctx.fill();
+    }
+
 var sclr = 0;
 
-function drawNoiseCircle(x, y, radius, rndRad, sclrVar){
+function drawNoiseCircle(x, y, radius, rndRad, sclrVar,clrInc){
     sclr = sclrVar+1;                
 
     generator.setAmplitude(radius/5);
+
+
+    ctx.beginPath();
+    // ctx.moveTo(x, y);
 
 
    for(var i = 0; i < 360; i+=1){
@@ -135,10 +159,16 @@ function drawNoiseCircle(x, y, radius, rndRad, sclrVar){
     var outx = getCircleXPos(x,i, rndAmp);
     var outy = getCircleYPos(y,i, rndAmp);
 
+    ctx.lineTo(outx, outy);
+
     // var outx = getCircleXPos(x,i, radius);
     // var outy = getCircleYPos(y,i, radius);
-    drawPixel(outx, outy);
-   }  
+    // drawFadePixel(outx, outy);
+   }
+   ctx.closePath();
+   ctx.strokeStyle = 'rgba('+clrInc+','+clrInc/2+','+clrInc*2+',0.5)';
+   ctx.lineWidth = 5;
+   ctx.stroke();
 }
 
 // Canvas Drawing Functions ============================================
@@ -174,7 +204,7 @@ function drawRandomRipple(){
 function fadeCanvas() {
 
     ctx.beginPath()
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillStyle = nhdarkbluealpha;
     ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
     ctx.closePath();
 
