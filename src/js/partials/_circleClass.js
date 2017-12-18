@@ -24,14 +24,13 @@ function createRipple(thisx,thisy) {
     }
 
     function loop(){
-        clrInc += 10;
+        clrInc += 0.03;
+        var icol = _interpolateColor(scol, ecol, clrInc);
+        var hcol = r2h(icol);
 
         if(objRadius<objMaxRadius){
             objRadius+=1;
-            // drawRipple(objx,objy,objRadius,nhpink);
-                // drawNoiseCircle(tempPosX,tempPosY,25, rndRadius, sclrVar )
-
-            drawNoiseCircle(objx,objy,objRadius, objRadius,objRadius/2, clrInc);
+            drawNoiseCircle(objx,objy,objRadius, objRadius,objRadius/2, hcol);
         } else {
             alive = false;
         }

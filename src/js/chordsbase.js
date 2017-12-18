@@ -140,10 +140,10 @@ function drawFadePixel(x, y){
 
 var sclr = 0;
 
-function drawNoiseCircle(x, y, radius, rndRad, sclrVar,clrInc){
+function drawNoiseCircle(x, y, radius, rndRad, sclrVar,thisclr){
     sclr = sclrVar+1;                
 
-    generator.setAmplitude(radius/5);
+    generator.setAmplitude(radius);
 
 
     ctx.beginPath();
@@ -153,11 +153,15 @@ function drawNoiseCircle(x, y, radius, rndRad, sclrVar,clrInc){
    for(var i = 0; i < 360; i+=1){
     // var rndrad = Math.floor((Math.random() * radius) + 70);
 
+    var radVar = 0;
+    var radInc = i/360;
+    if(i<180){radVar = radInc} else {radVar = 1.0 - radInc};
+    console.log('i: ' + i + ', radvar: ' + radVar);
 
-    var rndAmp = rndRad + generator.getVal(sclr+i);
+    var noiseRad = radius + (radVar*(generator.getVal(sclr+i)));
 
-    var outx = getCircleXPos(x,i, rndAmp);
-    var outy = getCircleYPos(y,i, rndAmp);
+    var outx = getCircleXPos(x,i, noiseRad);
+    var outy = getCircleYPos(y,i, noiseRad);
 
     ctx.lineTo(outx, outy);
 
@@ -166,7 +170,7 @@ function drawNoiseCircle(x, y, radius, rndRad, sclrVar,clrInc){
     // drawFadePixel(outx, outy);
    }
    ctx.closePath();
-   ctx.strokeStyle = 'rgba('+clrInc+','+clrInc/2+','+clrInc*2+',0.5)';
+   ctx.strokeStyle = thisclr;
    ctx.lineWidth = 5;
    ctx.stroke();
 }
