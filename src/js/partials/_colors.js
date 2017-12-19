@@ -118,8 +118,8 @@ var _interpolateHSL = function(color1, color2, factor) {
 };
 
 
-scol = h2r(sunsetpink);
-ecol = h2r(nhdarkerpink);
+scol = h2r(nhblue);
+ecol = h2r(nhturq);
 
 var icol = _interpolateColor(scol, ecol, 0.5);
 var hcol = r2h(icol);

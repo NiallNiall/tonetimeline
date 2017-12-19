@@ -3,7 +3,8 @@ function createRipple(thisx,thisy) {
     var alive = true;
 
     var objRadius = 1;
-    var objMaxRadius = 200;
+    var objMaxRadius = randomIntFromInterval(50,150);
+    var objSpeed = objMaxRadius / 250; 
     var objx = thisx;
     var objy = thisy;
 
@@ -11,7 +12,8 @@ function createRipple(thisx,thisy) {
 
     var ripple = {
         drawRipple: drawRipple,
-        loop: loop
+        loop: loop,
+        getStatus: getStatus
     };
 
     function drawRipple(x,y,radius,clr) {
@@ -23,13 +25,18 @@ function createRipple(thisx,thisy) {
         ctx.closePath();
     }
 
+    function getStatus(){
+        var thisStatus = alive;
+        return thisStatus;
+    }
+
     function loop(){
         clrInc += 0.03;
         var icol = _interpolateColor(scol, ecol, clrInc);
-        var hcol = r2h(icol);
+        var hcol = 'rgba(255,255,255,0.5)';//r2h(icol);
 
         if(objRadius<objMaxRadius){
-            objRadius+=1;
+            objRadius+=objSpeed;
             drawNoiseCircle(objx,objy,objRadius, objRadius,objRadius/2, hcol);
         } else {
             alive = false;
