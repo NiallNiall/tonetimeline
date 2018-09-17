@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tone Timeline</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+    html,
+    body {
+        background-color: white;
+        color: black;
+        font-family: sans-serif;
+        line-height: 1.4;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .fullWidthCanvas {
+        background: #FCF7E9;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    .fullwidth {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /*		background: #240;*/
+    }
+
+    .fullwidth.white {
+        background: #fff;
+    }
+
+    .midbtn {
+        background: #f00;
+        padding: 24px;
+        position: absolute;
+        margin-left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        z-index: 10;
+    }
+    </style>
+</head>
+
+<body>
+    <a class="midbtn" id="playbtn">PLAY</a>
+    <div id="mainbox" class="fullwidth"></div>
+    <canvas id="paperCanvas" class="fullWidthCanvas" resize></canvas>
+    <script src="js/vendor/Tone.js"></script>
+    <script src="js/newspritetone.js"></script>
+    <script>
+    var myCanvas = document.getElementById("paperCanvas");
+
+    myCanvas.width = window.innerWidth;
+    myCanvas.height = window.innerHeight;
+    var ctx = myCanvas.getContext("2d");
+
+    var centerX = myCanvas.width / 2;
+    var centerY = myCanvas.height / 2;
+
+
+    function clearCanvas() {
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    }
+
+    function fadeCanvas() {
+
+    	ctx.beginPath()
+     	ctx.fillStyle = 'rgba(0, 35, 15, 0.1)';
+        ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
+        ctx.closePath();
+
+    	// ctx.fillStyle = 'Blue';
+     //    ctx.rect(0, 0, myCanvas.width, myCanvas.height);
+    }
+
+    // console.log(ctx);
+
+    function drawCircle(x, y, radius, clr) {
+        ctx.beginPath()
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = clr;
+        ctx.stroke();
+        ctx.closePath();
+    }
+
+    function drawFillCircle(x, y, radius, clr) {
+        ctx.beginPath()
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        // ctx.lineWidth = 5;
+        ctx.fillStyle = clr;
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    function drawPixel(x, y){
+        ctx.beginPath();
+        ctx.rect(x,y,5,5);
+        ctx.fillStyle = 'White';
+        ctx.fill();
+        ctx.closePath();  
+    }
+
+	var midsize = 10;
+
+    function renderLoop() {
+
+    	fadeCanvas();
+
+        // drawCircle(centerX, centerY, 200, 'Black');
+        // drawFillCircle(centerX, centerY, midsize, 'Red');
+        // drawFillCircle(centerX, centerY, 75, 'White');
+
+        if(midsize>0){midsize -= 1}else{midsize=0;}
+    }
+
+    renderLoop();
+
+    var frameIndex = 0;
+    var spriteWidth = 500;
+    var spriteHeight = 500;
+    var spriteMax = 25000;
+    var numFrames = spriteMax / spriteWidth;
+
+
+
+    var img = new Image();
+    img.onload = function() {
+        // ctx.drawImage(img, frameIndex, 0, spriteMax, 500, 0, 0, 500, 500);
+    };
+    img.src = 'img/circspin-sprite.png';
+
+
+    var frameCount = 0;
+    var frameRateish = 5;
+
+    function frameLoop() {
+        window.requestAnimationFrame(frameLoop);
+        // spriteFrameLoop();
+        // ctx.drawImage(img, frameIndex * spriteWidth, 0, spriteMax, 500, 0, 0, 500, 500);
+        // context.drawImage(img,startxclip,startyclip,imgwidth,imgheight,xpos,ypos,width,height);
+        ctx.drawImage(img, frameIndex * spriteWidth, 0, 500, 500, centerX-(spriteWidth/2), centerY-(spriteHeight/2), 500,500);
+        // ctx.drawImage(img,0,0,25000,500);
+        renderLoop();
+        // nextSpriteFrame();
+        spriteFrameLoop();
+    }
+
+    frameLoop();
+
+    function nextSpriteFrame(){
+        console.log(frameCount + ' ' + frameIndex);
+        frameIndex +=1;
+    }
+
+    function spriteFrameLoop() {
+
+        if (frameCount < frameRateish) {
+            frameCount += 1;
+        }
+
+        // if(frameIndex < numFrames-1){
+        //     frameIndex +=1;
+        // } else {
+        //     frameIndex = 0;
+        // }
+
+        // console.log(frameCount + ' ' + frameIndex);
+        if (frameCount < frameRateish) {
+            frameCount += 1;
+        } else {
+            if (frameIndex < numFrames-1) {
+                frameIndex += 1;
+            } else {
+                frameIndex = 0;
+            }
+            frameCount = 0;
+        }
+    }
+
+    </script>
+</body>
+
+</html>
